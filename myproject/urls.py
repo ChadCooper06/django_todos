@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from myproject import settings
 
 urlpatterns = [
     path('todo_list/', include('todo_list.urls')),

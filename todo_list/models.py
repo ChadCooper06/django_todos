@@ -8,24 +8,42 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
+
 class Todo(models.Model):
-    id = models.IntegerField(primary_key=True)
+
+    id = models.ManyToManyField(User, primary_key=True)
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=200)
-    priority = models.Choices(high,low)
-    completed = models.BooleanField()
-    created_by = models.CharField(max_length=200)
-    created_at = models.TimeField()
-    due_by = models.DateField()
-    category = models.Choices()
+    completed = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateField('Date created', auto_created=True)
+    due_by = models.DateField('Due Date', auto_now=False)
+    category = models.ManyToManyField(Categories, on_delete=models.CASCADE)
+
+    HIGH = 'H'
+    NORMAL = 'N'
+    LOW = 'L'
+    PRIORITY_CHOICES = [
+        (HIGH, 'High'),
+        (NORMAL, 'Normal'),
+        (LOW, 'Low'),
+    ]
+    priority_choices = models.CharField(
+        max_length=1,
+        choices=PRIORITY_CHOICES,
+        default=NORMAL,
+    )
 
     def __str__(self):
         return self.name
 
 class Categories(models.Model):
-    type = models.CharField(primary_key=True)
-    due = models.DateField()
-    completed = models.BooleanField()
+    id = models.IntegerField(primary_key=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    label = models.ManyToManyField(
+        Todos,
+        setdefault=null,
+        )
 
     def __str__(self):
         return self.label
@@ -33,9 +51,13 @@ class Categories(models.Model):
 class Events(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=200)
-    when = models.DateTimeField()
+    start = models.DateTimeField(default='date')
+    end = models.DateTimeField(default='date')
     status = models.CharField(max_length=200)
-    created_by = models.CharField(max_length=200)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        )
 
     def __str__(self):
         return self.name
