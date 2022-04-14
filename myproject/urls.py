@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 from myproject import settings
 from rest_framework import routers, serializers, viewsets
+from myproject.todo_list import views
+from django.contrib.auth.models import User, Todo, Categories, Events
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +27,6 @@ urlpatterns = [
     path('', include(router.urls)),
 ]
 
-from django.contrib.auth.models import User
 
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -34,3 +35,4 @@ router.register(r'users', UserViewSet)
 router.register(r'')
 router.register(r'categories', CategoriesViewSet)
 router.register(r'events', EventsViewSet)
+
