@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+
 class User(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=200, blank=False, null=False)
@@ -12,10 +13,10 @@ class User(models.Model):
 class Categories(models.Model):
     id = models.IntegerField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    label = models.CharField(max_length=200, default='Tasks')
+    name = models.CharField(max_length=200, default='Tasks')
 
     def __str__(self):
-        return self.label
+        return self.name
 
 class Todo(models.Model):
 
