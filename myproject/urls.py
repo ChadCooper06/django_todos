@@ -16,23 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from myproject import settings
-from rest_framework import routers, serializers, viewsets
-from myproject.todo_list import views
-from django.contrib.auth.models import User, Todo, Categories, Events
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('todo_list/', include('todo_list.urls')),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include(router.urls)),
-]
-
-
+from rest_framework import routers
+from todo_list.views import UserViewSet, TodoViewSet, CategoriesViewSet, EventsViewSet
+from todo_list.models import User, Todo, Categories, Events
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'')
+router.register(r'user', UserViewSet)
+router.register(r'todo',TodoViewSet)
 router.register(r'categories', CategoriesViewSet)
 router.register(r'events', EventsViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('admin/', admin.site.urls),
+    path('todo_list/', include('todo_list.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+]
+
+
 

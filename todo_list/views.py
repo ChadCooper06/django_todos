@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from tutorial.quickstart.serializers import UserSerializer, GroupSerializer
-
+from .models import User, Todo, Categories, Events
+from .serializers import UserSerializer, TodoSerializer, CategoriesSerializer, EventsSerializer
 
 def index(request):
     return HttpResponse("Hello, world. You're at the todos index.")
@@ -15,7 +15,7 @@ def index(request):
 
 class UserViewSet(viewsets.ModelViewSet):
     
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
